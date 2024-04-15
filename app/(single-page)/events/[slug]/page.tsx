@@ -1,5 +1,13 @@
 import fs from "fs";
+import path from "path";
 import { compileMDX } from "next-mdx-remote/rsc";
+
+export async function generateStaticParams() {
+  const files = fs.readdirSync("content/events");
+  return files.map((slug) => ({
+    slug: path.parse(slug).name,
+  }));
+}
 
 const EventPage = async ({ params }: { params: { slug: string } }) => {
   const data = fs.readFileSync(`content/events/${params.slug}.mdx`);
